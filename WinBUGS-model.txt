@@ -1,0 +1,29 @@
+model
+{
+for (i in 1:N) {
+		y[i] ~ dbern(p[i])
+		#logit(p[i]) <- ((gamma * logit(rho.0) - x.1* (logit(theta)))  + ((logit(theta) - logit(rho.0)) *x[i]))  /(gamma - x.1)
+		logit(p[i]) <- beta.0 + beta.1 *x[i]
+	                    }      
+
+
+
+
+# Prior   Info    
+gamma ~ dunif(140, 425)
+rho.0 ~ dunif(0, 0.2)
+beta.0 <-  (gamma * logit(rho.0) - x.1* (logit(theta))) / (gamma - x.1)
+beta.1 <-  (logit(theta) - logit(rho.0))/(gamma - x.1)
+}
+
+
+data
+list( y = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1), 
+      x = c(140, 210, 250, 273, 291, 306, 318, 328, 337, 345, 352, 338), 
+      N = 12,  theta = 0.333333, x.1 = 140 )
+
+			
+initials
+list(rho.0 = 0.05,  gamma = 150)
+list(rho.0 = 0.10,  gamma = 275)
+list(rho.0 = 0.15,  gamma = 400)

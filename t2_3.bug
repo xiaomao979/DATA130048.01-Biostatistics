@@ -1,0 +1,13 @@
+model
+{
+for (i in 1:N) {
+		y[i] ~ dbern(p[i])
+		#logit(p[i]) <- ((gamma * logit(rho.0) - x.1* (logit(theta)))  + ((logit(theta) - logit(rho.0)) *x[i]))  /(gamma - x.1)
+		logit(p[i]) <- beta.0 + beta.1 *x[i]
+	                    }      
+# Prior   Info    
+gamma ~ dunif(50, 400)
+rho.0 ~ dunif(0, 0.25)
+beta.0 <-  (gamma * logit(rho.0) - x.1* (logit(theta))) / (gamma - x.1)
+beta.1 <-  (logit(theta) - logit(rho.0))/(gamma - x.1)
+}
